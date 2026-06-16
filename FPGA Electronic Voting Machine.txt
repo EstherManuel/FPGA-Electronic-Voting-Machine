@@ -1,0 +1,120 @@
+FPGA Electronic Voting Machine
+
+Project Description
+
+This project implements an Electronic Voting Machine (EVM) using Verilog HDL in Xilinx Vivado. The system allows registered voters to cast votes for one of four candidates while preventing duplicate voting. Each voter is identified by a unique voter ID, and once a vote is recorded, the voter cannot vote again. The design also determines the winning candidate based on the total vote count.
+
+The project demonstrates concepts such as sequential logic, combinational logic, register-based storage, vote counting, and digital system verification through simulation.
+
+Features
+Supports 4 candidates.
+Unique voter identification using a 4-bit voter ID.
+Prevents duplicate voting.
+Real-time vote counting.
+Winner determination logic.
+Synchronous design using clocked logic.
+Reset functionality to clear all votes.
+Verified using a Verilog testbench in Vivado.
+
+Inputs and Outputs
+| Signal        | Width  | Description                           |
+| ------------- | ------ | ------------------------------------- |
+| clk           | 1 bit  | System clock                          |
+| reset         | 1 bit  | Resets vote counts and voter database |
+| vote_en       | 1 bit  | Enables vote submission               |
+| voter_id      | 4 bits | Unique voter ID (0–15)                |
+| candidate_sel | 2 bits | Candidate selection                   |
+| result_mode   | 1 bit  | Enables result display mode           |
+
+
+Candidate Selection Encoding
+
+| candidate_sel | Candidate   |
+| ------------- | ----------- |
+| 00            | Candidate 1 |
+| 01            | Candidate 2 |
+| 10            | Candidate 3 |
+| 11            | Candidate 4 |
+
+Outputs
+
+| Signal        | Width  | Description                      |
+| ------------- | ------ | -------------------------------- |
+| cand1_vote    | 8 bits | Vote count for Candidate 1       |
+| cand2_vote    | 8 bits | Vote count for Candidate 2       |
+| cand3_vote    | 8 bits | Vote count for Candidate 3       |
+| cand4_vote    | 8 bits | Vote count for Candidate 4       |
+| vote_accepted | 1 bit  | Indicates successful vote        |
+| already_voted | 1 bit  | Indicates duplicate vote attempt |
+| winner        | 2 bits | Winning candidate                |
+
+Winner Encoding
+
+| winner | Candidate   |
+| ------ | ----------- |
+| 00     | Candidate 1 |
+| 01     | Candidate 2 |
+| 10     | Candidate 3 |
+| 11     | Candidate 4 |
+
+How to Run in Vivado
+
+1. Create a New Project
+Open Xilinx Vivado.
+Click Create New Project.
+Enter the project name.
+Select RTL Project.
+Choose your target FPGA device or board.
+
+2. Add Source Files
+Add the Verilog design file (vote.v).
+Add the testbench file (vote_tb.v).
+
+3. Run Simulation
+
+In the Flow Navigator, select:
+
+Simulation → Run Simulation → Run Behavioral Simulation
+
+4. Verify Results
+
+Observe the waveform and verify:
+
+Votes are counted correctly.
+Duplicate votes are rejected.
+Vote counts update properly.
+Winner is determined correctly.
+5. Modify Test Cases
+
+Edit the testbench to:
+
+Add more voters.
+Test duplicate voting attempts.
+Test tie conditions.
+Test reset operation.
+6. Re-run Simulation
+
+After modifying the testbench:
+
+Run Behavioral Simulation
+
+and verify the updated waveform.
+
+Tools Used
+
+Verilog HDL
+
+Xilinx Vivado 2025.1
+Behavioral Simulation
+
+Future Improvements
+
+Finite State Machine (FSM)-based architecture.
+Password-protected result mode.
+Seven-segment display interface.
+FPGA board implementation.
+LCD/OLED result display.
+UART-based result transmission.
+
+## Simulation Result
+![Vivado Simulation Waveform](Screenshot%20\(309\).png)
