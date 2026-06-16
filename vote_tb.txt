@@ -1,0 +1,69 @@
+`timescale 1ns/1ps
+module vote_tb();
+reg clk;
+reg reset;
+reg vote_en;
+reg [3:0]voter_id;
+reg [1:0]candidate_sel;
+reg result_mode;
+
+wire [7:0]cand1_vote;
+wire [7:0]cand2_vote;
+wire [7:0]cand3_vote;
+wire [7:0]cand4_vote;
+
+wire vote_accepted;
+wire already_voted;
+wire [1:0]winner;
+
+vote dut(.clk(clk),.reset(reset),.vote_en(vote_en),.candidate_sel(candidate_sel),.cand1_vote(cand1_vote),.cand2_vote(cand2_vote),.cand3_vote(cand3_vote),.cand4_vote(cand4_vote),
+.voter_id(voter_id),.result_mode(result_mode),.vote_accepted(vote_accepted),.already_voted(already_voted),.winner(winner));
+
+always #5 clk = ~clk;
+
+initial begin
+
+clk=0;
+reset=1;
+vote_en=0;
+result_mode=0;
+
+#20;
+reset=0;
+
+voter_id=4'd1;
+candidate_sel=3'b00;
+vote_en=1;#10;
+vote_en=0;
+
+voter_id=4'd1;
+candidate_sel=3'b00;
+vote_en=1;#10;
+vote_en=0;
+
+voter_id=4'd2;
+candidate_sel=3'b01;
+vote_en=1;#10;
+vote_en=0;
+
+voter_id=4'd3;
+candidate_sel=3'b10;
+vote_en=1;#10;
+vote_en=0;
+
+voter_id=4'd4;
+candidate_sel=3'b11;
+vote_en=1;#10;
+vote_en=0;
+#50;
+
+$display("candidate1=%d", cand1_vote);
+$display("candidate2=%d", cand2_vote);
+$display("candidate3=%d", cand3_vote);
+$display("candidate4=%d", cand4_vote);
+
+$display("winner=%d", winner);
+
+$finish;
+end
+endmodule

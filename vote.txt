@@ -1,0 +1,74 @@
+`timescale 1ns / 1ps
+
+module vote(
+input clk, reset, vote_en, input[3:0] voter_id, input[1:0]candidate_sel, input result_mode,
+output reg[7:0]cand1_vote,output reg[7:0]cand2_vote,output reg[7:0]cand3_vote,output reg[7:0]cand4_vote, output reg vote_accepted, output reg already_voted, output reg [1:0]winner
+    );
+    
+reg [15:0]voter_database;
+always @(posedge clk or posedge reset)begin
+
+if(reset)begin
+voter_database<=16'b0;
+cand1_vote<=0;
+cand2_vote<=0;
+cand3_vote<=0;
+cand4_vote<=0;
+vote_accepted<=0;
+already_voted<=0;
+end
+
+else begin
+vote_accepted<=0;
+already_voted<=0;
+if(vote_en)begin
+if(voter_database[voter_id]== 1'b0)begin
+voter_database[voter_id]<=1'b1;
+case(candidate_sel)
+2'b00: 
+begin
+cand1_vote<=cand1_vote+1;
+end
+
+2'b01: 
+begin
+cand2_vote<=cand2_vote+1;
+end
+
+2'b10: 
+begin
+cand3_vote<=cand3_vote+1;
+end
+
+2'b11: 
+begin
+cand4_vote<=cand4_vote+1;
+end
+endcase
+vote_accepted<=1;
+end
+else begin
+already_voted<=1;
+end
+end
+end
+end
+always@(*)begin
+winner=2'b00;
+if(cand1_vote>=cand2_vote&&
+   cand1_vote>=cand3_vote&&
+   cand1_vote>=cand4_vote)
+winner=2'b00;
+else if(cand2_vote>=cand1_vote&&
+   cand2_vote>=cand3_vote&&
+   cand2_vote>=cand4_vote)
+winner=2'b01;
+else if(cand3_vote>=cand1_vote&&
+   cand3_vote>=cand2_vote&&
+   cand3_vote>=cand4_vote)
+winner=2'b10;
+
+else
+winner=2'b11;
+end
+endmodule
